@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<body>
+  <h1>WebView and Web Test</h1>
+   <button style={{padding:10 }} id="myButton" onclick="sendDataToWebView()">Google Login</button>
+    <div style="color: black; font-size: 16px;" id="name"></div>
+    <div style="color: black; font-size: 16px;" id="email"></div>
+</body>
+<script>    
+
+  
+// Event listener to listen messages coming from native app
+window.addEventListener('message', (event) => {
+    if(window.ReactNativeWebView){
+        
+        var data = JSON.stringify(event.data)
+        var parsedJSON = JSON.parse(data);
+        var name = document.getElementById("name");
+        var email = document.getElementById("email");
+        name.innerHTML = parsedJSON.name;
+        email.innerHTML = parsedJSON.email;
+
+    }  
+});    
+    
+// Use window.ReactNativeWebView.postMessage to send data to React Native App
+function sendDataToWebView(){
+    if(window.ReactNativeWebView){
+         const dataToNative = { key: 'google' };
+         window.ReactNativeWebView.postMessage(JSON.stringify(dataToNative));
+    }else{
+         alert("Its for Web Login")
+    }
+}
+</script>
+
+</head>
+
+</html>
